@@ -13,10 +13,14 @@ class CartController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $carts = \Cart::getContent();
+{
+        $cartItems = \Cart::getContent();
 
-        return view('frontend.cart.index', compact('carts'));
+ 
+ 
+        return view('frontend.cart.index', compact('cartItems'));
+
+        
     }
 
     /**

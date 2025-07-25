@@ -6,7 +6,7 @@
     <meta name="keywords" content="Ogani, unica, creative, html" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Ogani | Template</title>
+    <title>Checkout | Template</title>
 
     <!-- Google Font -->
     <link
@@ -58,9 +58,9 @@
                 <a href="./index.html"><img src="{{ asset('frontend/img/logo.png') }}" alt="" /></a>
               </div>
               <ul>
-                <li>Address: 60-49 Road 11378 New York</li>
-                <li>Phone: +65 11.188.888</li>
-                <li>Email: hello@colorlib.com</li>
+                <li>Address: 60-49 Road 11378 Rabt</li>
+                <li>Phone: +06 11.18.88</li>
+                <li>Email: hello@store.com</li>
               </ul>
             </div>
           </div>

@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('code')->unique();
-            $table->string('status');
+            $table->string('status')->nullable();
             $table->datetime('order_date');
-            $table->datetime('payment_due');
-            $table->string('payment_status');
+            $table->dateTime('payment_due')->nullable(); // PAS de default ici
+            $table->string('payment_status')->nullable();
             $table->string('payment_token')->nullable();
             $table->string('payment_url')->nullable();
             $table->decimal('base_total_price', 16, 2)->default(0);
@@ -48,7 +48,7 @@ return new class extends Migration
             $table->text('cancellation_note')->nullable();
 
             $table->index('payment_token');
-            $table->index('code');
+            $table->index('code')->nullable();
             $table->index(['code', 'order_date']);
             $table->timestamps();
             $table->softDeletes();

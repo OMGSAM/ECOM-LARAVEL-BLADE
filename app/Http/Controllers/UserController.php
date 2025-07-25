@@ -8,11 +8,14 @@ class UserController extends Controller
 {
     public function index()
     {
-        // $users = auth()->user();
-        
-        return response()->json([
-            'users' => $users,
-            'status' => 200
-        ]);
+         $users = auth()->user();
+       
+        // return response()->json([
+        //     'users' => $users,
+        //     'status' => 200
+        // ]);
+
+        return $users;
     }
+
 }

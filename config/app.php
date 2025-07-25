@@ -141,6 +141,8 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+        
+
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
         Illuminate\Bus\BusServiceProvider::class,
@@ -168,6 +170,8 @@ return [
          * Package Service Providers...
          */
         Darryldecode\Cart\CartServiceProvider::class,
+        
+
 
         /*
          * Application Service Providers...
@@ -194,5 +198,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'Cart' => Darryldecode\Cart\Facades\CartFacade::class
     ])->toArray(),
+      
+
 
 ];

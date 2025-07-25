@@ -35,6 +35,8 @@
                         <a class="collapse-item" href="{{ route('admin.tags.index') }}">Tag</a>
                         <a class="collapse-item" href="{{ route('admin.products.index') }}">Product</a>
                          <a class="collapse-item" href="{{ route('admin.products.clients') }}">Clients</a>
+    <a class="collapse-item" href="{{ route('admin.orders.index') }}">Orders</a>
+
                     </div>
                 </div>
             </li>

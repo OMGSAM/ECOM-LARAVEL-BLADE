@@ -3,17 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Cart;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $products = Product::with('category')->get(['id','name', 'price','slug']);
+       $products = Product::with('category')->get(['id','name', 'price','slug']);
         
-        $cartTotal = \Cart::getTotal();
-        $cartCount = \Cart::getContent()->count();
+         $cartTotal = \Cart::getTotal();
+         $cartCount = \Cart::getContent()->count();
 
         return view('frontend.homepage', compact('products', 'cartTotal', 'cartCount'));
+       
+              
+
+
     }
 
     public function getProducts(){

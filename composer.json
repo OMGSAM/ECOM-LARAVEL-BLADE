@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
         "midtrans/midtrans-php": "^2.5",
+        "simplesoftwareio/simple-qrcode": "^0.0.4@beta",
         "spatie/laravel-medialibrary": "^10.0.0"
     },
     "require-dev": {
@@ -38,7 +39,7 @@
         "psr-4": {
             "Tests\\": "tests/"
         },
-        "files": [
+        "files": [!!!!!!!!!
             "app/Helpers/General.php"
         ]
     },

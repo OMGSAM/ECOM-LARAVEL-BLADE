@@ -1,20 +1,50 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\PDFController;
+use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use App\Mail\ContactEmail;
+use App\Models\Product;
+use App\Models\Order;
+use App\Http\Controllers\FactureController;
+use App\Http\Controllers\OrderController;
+
+Route::view('/blog','welcome')->name('blog');
+Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
+Route::resource('faktora',FactureController::class);
+Route::get('/generate', [FactureController::class, 'generate'])->name('generate');
+Route::get('/gg', [FactureController::class, 'gg'])->name('gg');
+
+
+Route::get('/categories',function (){
+    $products = Product::with('category')->get(['id','name', 'price','slug']);
+         $cartTotal = \Cart::getTotal();
+         $cartCount = \Cart::getContent()->count();
+
+        return view('frontend.homepage', compact('products', 'cartTotal', 'cartCount'));
+       
+
+})->name('categories');
+
+
+
+Route::get('/thank', function(){
+        $cartTotal = \Cart::getTotal();
+         $cartCount = \Cart::getContent()->count();
+         return view ('thank',compact('cartTotal', 'cartCount'));
+})->name('thank');
+
+
+// Route::get('/thank',function(){
+    
+//     return $request->all();
+    
+    
+// })->name('thank');
+
+Route::view('/contact','welcome')->name('contact');
+
 
 Route::post('/subscribe' , function (){
     return "u r subsriced freroo" ;
@@ -25,6 +55,14 @@ Route::post('/subscribe' , function (){
 Route::get('/admin/clients' , function (){
     return "view clients index');" ;
 })->name('admin.products.clients');
+
+
+Route::get('/admin/orders' , function (){
+$orders=Order::all();
+    return view ('admin.orders.index',compact('orders')) ;
+
+})->name('admin.orders.index');
+
 
 
 Route::get('/dashboard', function () {
@@ -38,54 +76,38 @@ Route::post('/logout', function () {
 
 
 
-Route::get('/blog' , function (){
-    return "blog";
-})->name('blog');
+ 
 
+ 
+Route::post('/search_product' ,function (Request $request) {
+    
 
-Route::get('/categories' , function (){
-    return "categories";
-})->name('categories');
+    $validated= $request->validate([
+        'product'=>'required|min:2' ,
+        
+    ]);
+
+    dd($validated);
+});
+
 
 Route::post('/sendEmail' , function (Request $request) {
+    
+
     $validated= $request->validate([
         'name'=>'required|min:2' ,
         'email' =>'required',
         'message' => 'required|max:10'
     ]);
     
-    dump($validated);
-
-    return response()->json([
-        'success' => true,
-        'message' => 'Message envoye avec succes !'
-    ]);
-
-
-     
-    Mail::to('xoxixa9@gmail.com')->send(new ContactEmail($name, $email, $message));
-
- 
-
-  return response()->json([
-        'success' => true,
-        'message' => 'Message envoyé avec succès !']);
+    // dump($validated);    
+    // Mail::to('xoxixa9@gmail.com')->send(new ContactEmail($name, $email, $message));
+   
+return back()->with('success', 'Email envoyé avec succès !');
+    
+   
 
 })->name('sendEmail');
-
-
-// Route::post('/send-email', function (Request $request) {
-//     $name = $request->input('name');
-//     $email = $request->input('email');
-//     $message = $request->input('message');
-
-//     // Send email
-//     Mail::to('abdelalibenajaji@gmail.com')->send(new ContactEmail($name, $email, $message));
-
-//     // Return a response or redirect as needed
-//     return redirect()->back()->with('success', 'Email sent successfully!');
-// })->name('send-email');
-
 
 
 
@@ -102,7 +124,7 @@ Route::get('products', [\App\Http\Controllers\HomeController::class, 'getProduct
 Route::get('product-detail/{product:slug}', [\App\Http\Controllers\ProductController::class, 'getProductDetail']);
 Route::post('carts', [\App\Http\Controllers\CartController::class, 'store']);
 Route::get('carts', [\App\Http\Controllers\CartController::class, 'showCart']);
-Route::get('/contact', [\App\Http\Controllers\BlogController::class, 'index'])->name('contact.index');
+Route::get('contact', [\App\Http\Controllers\BlogController::class, 'index'])->name('contact.index');
 // ongkir
 Route::get('api/provinces', [\App\Http\Controllers\OngkirController::class, 'getProvinces']);
 Route::get('api/cities', [\App\Http\Controllers\OngkirController::class, 'cities']);
@@ -117,13 +139,20 @@ Route::get('api/users', [\App\Http\Controllers\UserController::class, 'index']);
 Route::group(['middleware' => 'auth'], function() {
     
     Route::get('/order/checkout', [\App\Http\Controllers\OrderController::class, 'process'])->name('checkout.process');
+
+     Route::POST('/checkout', [\App\Http\Controllers\OrderController::class, 'checkout'])->name('checkout');
+
+        
     Route::resource('/cart', \App\Http\Controllers\CartController::class)->except(['store', 'show']);
 
     Route::group(['middleware' => ['isAdmin'],'prefix' => 'admin', 'as' => 'admin.'], function() {
         Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
        
         // categories
-        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+                Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+
+
+
         Route::post('categories/images', [\App\Http\Controllers\Admin\CategoryController::class,'storeImage'])->name('categories.storeImage');
     
         // tags
@@ -136,6 +165,7 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 
-Auth::routes();
 
+
+Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

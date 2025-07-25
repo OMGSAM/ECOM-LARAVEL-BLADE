@@ -49,25 +49,20 @@ public function logout(){
 }
 
 
-    public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password','is_adm');
+    public function login(Request $request) {
 
+    $credentials = $request->only('email', 'password','is_admin');
     $user = User::where('email', $credentials['email'])->first();
-
-    // Comparaison SANS hash (dangereux)
     if ($user && $user->password === $credentials['password']) {
-        Auth::login($user);
-
-        if ($user->is_adm == 1){
-            return redirect()->intended('dashboard');
-
-        }
-        else {
-                      return to_route('homepage');
-
-        }
         
+
+        Auth::login($user);
+        if ($user->is_admin == 1){
+            return view('admin.dashboard');
+        }
+         else {
+            return to_route('homepage');            
+        }
     }
 
     return back()->withErrors([

@@ -17,17 +17,14 @@
                     <label for="category_id">Category</label>
                     <select class="form-control" name="category_id" id="">
                         @foreach($categories as $id => $categoryName)
-                            <option {{ $id === $product->category->id ? 'selected' : null }} value="{{ $id }}">{{ $categoryName }}</option>
+                            <option {{ $id == $product->category->id ? 'selected' : null }} value="{{ $id }}">{{ $categoryName }}</option>
                         @endforeach
                     </select>   
                     </div>
                     <div class="form-group">
                         <label for="tags">Tag</label>
-                        <select class="form-control" name="tags[]" multiple id="tags">
-                            @foreach($tags as $id => $tagName)
-                                <option {{ in_array($id, $product->tags->pluck('id')->toArray()) ? 'selected' : null  }} value="{{ $id }}">{{ $tagName }}</option>
-                            @endforeach
-                        </select>   
+                                                <input type="text" name="tags" value="{{ old('tags', $product->tags) }}" class="form-control">
+
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>

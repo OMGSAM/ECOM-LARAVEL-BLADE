@@ -27,7 +27,6 @@ return new class extends Migration
             $table->string('vendor_name')->nullable();
             $table->string('biller_code')->nullable();
             $table->string('bill_key')->nullable();
-            
             $table->index('number');
             $table->index('method');
             $table->index('token');

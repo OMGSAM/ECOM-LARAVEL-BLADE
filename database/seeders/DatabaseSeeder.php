@@ -4,6 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Database\Seeders\PaymentSeeder;
+use Database\Seeders\ShipmentSeeder;
+use Database\Seeders\OrderItemSeeder;
+use Database\Seeders\OrderSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -15,6 +19,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // \App\Models\User::factory(10)->create();
-        $this->call(AdminSeeder::class);
+        
+        $this->call(ShipmentSeeder::class);
+        $this->call(PaymentSeeder::class);
+        $this->call(OrderItemSeeder::class);
+        $this->call(OrderSeeder::class);
+ 
+
     }
 }

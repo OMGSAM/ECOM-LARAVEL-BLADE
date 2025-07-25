@@ -24,19 +24,29 @@
             </div>
         <div class="row">
           <div class="categories__slider owl-carousel">
-            @foreach($menu_categories as $menu_category)
-              <div class="col-lg-3">
-                <div
-                  class="categories__item set-bg"
-                 
-                >
+    
 
-                 
+<div class="row justify-content-center">
+  @for($i = 1; $i <= 4; $i++)
+     <div class=" d-flex justify-content-center">
+      <div class="categories__item text-center">
+        <h5>
+          <a href="#">
+            Accessoire {{ $i }}
+          </a>
+        </h5>
+        <img src="{{ asset('frontend/img/categories/cat-' . $i . '.jpg') }}" 
+             alt="Accessoire {{ $i }}" 
+            
+              >
+      </div>
+    </div>
+  @endfor
+</div>
 
-                  <h5><a href="{{ route('shop.index', $menu_category->slug) }}">{{ $menu_category->name }}</a></h5>
-                </div>
-              </div>
-            @endforeach
+
+
+
           </div>
         </div>
       </div>
@@ -45,18 +55,33 @@
 
     <!-- Featured Section Begin -->
     <section class="featured spad">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="section-title">
-              <h2>Featured Product</h2>
-            </div>
-          </div>
-        </div>
-        <div class="row featured__filter" id="product-list">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 text-center">
+        <div class="section-title">
+          <h2>Featured Product</h2>
         </div>
       </div>
-    </section>
+    </div>
+
+    <div class="row justify-content-center">
+      @for ($i = 1; $i <= 4; $i++)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex justify-content-center">
+          <div class="categories__item text-center">
+           <a href="{{url('products')}}">
+
+            <h5> PC LG {{ $i }}</h5>
+            <img src="{{ asset('frontend/img/product/product-' . $i . '.jpg') }}" alt="Image {{ $i }}" class="img-fluid" style="max-height: 200px;">
+</a>
+          </div>
+        </div>
+      @endfor
+    </div>
+  </div>
+</section>
+
+
+
     <!-- Featured Section End -->
     <!-- information section -->
 
