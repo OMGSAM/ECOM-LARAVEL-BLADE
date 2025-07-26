@@ -9,8 +9,14 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Http\Controllers\FactureController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\HomeController;
 
-Route::view('/blog','welcome')->name('blog');
+Route::GET('foto/{y}', [HomeController::class, 'foto']);
+Route::get('/blog',function(){
+    return redirect(url('/'));
+})->name('blog');
+
 Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.destroy');
 Route::resource('faktora',FactureController::class);
 Route::get('/generate', [FactureController::class, 'generate'])->name('generate');
@@ -71,6 +77,8 @@ Route::get('/dashboard', function () {
 
 Route::post('/logout', function () {
  Auth::logout();
+    Cart::destroy();
+
  return to_route('/');
 })->name('logout');
 
@@ -109,6 +117,7 @@ return back()->with('success', 'Email envoyé avec succès !');
 
 })->name('sendEmail');
 
+Route::delete('/cart/remove', [CartController::class, 'destroy'])->name('cart.destroy');
 
 
 Route::get('/', [\App\Http\Controllers\HomeController::class, 'index'])->name('homepage');
@@ -137,6 +146,13 @@ Route::get('api/users', [\App\Http\Controllers\UserController::class, 'index']);
 
 
 Route::group(['middleware' => 'auth'], function() {
+
+Route::post('/add-to-cart', [CartController::class, 'store'])->name('cart.store');
+Route::get('/cart-content', [CartController::class, 'sidebarContent']);
+    Route::put('/cart/update', [CartController::class, 'update'])->name('cart.update');
+
+
+Route::get('clear/cart', [OrderController::class, 'clearCart']);
     
     Route::get('/order/checkout', [\App\Http\Controllers\OrderController::class, 'process'])->name('checkout.process');
 

@@ -17,7 +17,7 @@
                                 <th>No</th>
                                 <th>Name</th>
                                 <th>Category</th>
-                                <th>Tag</th>
+                                <th>Stock</th>
                                 <th>Price</th>
                                 <th>Quantity</th>
                                 <th>Image</th>
@@ -33,9 +33,11 @@
                                         <span class="badge badge-success">{{ $product->category->name }}</span>
                                     </td>
                                     <td>
-                                        @foreach($product->tags as $tag)
-                                            <span class="badge badge-primary"> {{ $tag->name  }}</span>
-                                        @endforeach
+                                        
+<span class="badge {{ $product->quantity != 0 ? 'badge-primary' : 'badge-danger' }}">
+    {{ $product->quantity != 0 ? 'In Stock' : 'Out of Stock' }}
+</span>
+                                       
                                     </td>
                                     <td>${{ number_format($product->price, 2) }}</td>
                                     <td>{{ $product->quantity }}</td>

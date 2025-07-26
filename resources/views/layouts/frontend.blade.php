@@ -24,10 +24,17 @@
     <link rel="stylesheet" href="{{ asset('frontend/css/slicknav.min.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ 
 
   </head>
 
   <body>
+
+
+ 
+
+
+
     @if (session('success'))
 <script>
     Swal.fire({
@@ -78,7 +85,9 @@
                            
 
             <div class="header__top__right__auth">
-              <a href="{{url('cart')}}"><i class="fa fa-user"></i> {{ auth()->user()->username }}</a>
+              <a href="{{url('cart')}}">
+<!-- <img src="{{ asset(auth()->user()->image) }}"  > -->
+                <i class="fa fa-user"></i> {{ auth()->user()->username }}</a>
             </div>
             <span class="arrow_carrot-down"></span>
             
@@ -139,20 +148,7 @@
 
     <!-- Header Section Begin -->
     <header class="header">
-        @auth
-      <div class="humberger__menu__cart">
-        <ul>
-          <li>
-                         <a href="{{url('cart')}}">
-
-              <i class="fa fa-shopping-bag"></i> <span>{{ $cartCount }}</span>
-            </a>
-          </li>
-        </ul>
         
-        <div class="header__cart__price">item: <span>${{ $cartTotal }}</span></div>
-      </div>
-    @endauth 
       <div class="header__top">
         <div class="container">
           <div class="row">
@@ -230,11 +226,11 @@
                 <li><a href="{{ route('shop.index') }}" >Shop</a></li>
                 <li>
                   <a href="{{url('categories')}}" >Categories</a>
-                  <ul class="header__menu__dropdown">
-                    @foreach($menu_categories as $menu_category)
+                  <!-- <ul class="header__menu__dropdown"> -->
+                    <!-- @foreach($menu_categories as $menu_category)
                       <li><a href="{{ route('shop.index', $menu_category->slug) }}">{{ $menu_category->name }}</a></li>
-                    @endforeach
-                  </ul>
+                    @endforeach -->
+                  <!-- </ul> -->
                 </li>
                 <li><a href="{{ route('contact.index') }}" >Contact US</a></li>
                 <li><a href="{{ route('blog') }}" >Blog</a></li>
@@ -249,22 +245,24 @@
 
 
 
-          <!-- <div class="col-lg-3">
-              @auth
-            <div class="header__cart">
-             
-              <ul>
-                
-                <li>
-                  <a href="{{ route('cart.index') }}"
-                    ><i class="fa fa-shopping-bag"></i> <span>{{ $cartCount }}</span></a
-                  >
-                </li>
-              </ul>
-              <div class="header__cart__price">item: <span>${{ $cartTotal }}</span></div>
-              @endauth
-            </div>
-          </div> -->
+         <div class="col-lg-3">
+  @auth
+    <div class="header__cart d-flex align-items-center justify-content-end">
+      <ul class="list-unstyled d-flex mb-0 me-3">
+        <li>
+          <a href="{{ route('cart.index') }}" class="text-dark" style="font-size: 24px;">
+            <i class="fa fa-shopping-bag me-1"></i>
+            <span class="badge bg-primary" style="font-size: 16px;">{{ $cartCount }}</span>
+          </a>
+        </li>
+      </ul>
+      <div class="header__cart__price text-end" style="font-size: 18px; font-weight: bold;">
+        Items Value: <span>{{ $cartTotal }} $</span>
+      </div>
+    </div>
+  @endauth
+</div>
+
 
 
 
@@ -312,20 +310,21 @@
 
     @yield('content')
 
-    <!-- Footer Section Begin -->
-    <footer class="footer spad">
-    <div class="container">
-    <div class="row">
+<!-- Footer Section Begin -->
+<!-- Footer Section Begin -->
+<footer class="footer spad bg-light text-dark pt-5">
+  <div class="container">
+    <div class="row text-center text-lg-start justify-content-center">
 
       <!-- Section À propos -->
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="col-lg-4 col-md-6 mb-4">
         <div class="footer__about">
-          <div class="footer__about__logo">
+          <div class="footer__about__logo mb-3 text-center">
             <a href="{{ url('/') }}">
-              <img src="{{ asset('frontend/img/logo.png') }}" alt="Logo" />
+              <img src="{{ asset('frontend/img/logo.png') }}" alt="Logo" style="max-width: 150px;">
             </a>
           </div>
-          <ul>
+          <ul class="list-unstyled small">
             <li>Address: Centre Mix Hay Nahda, Rabat</li>
             <li>Phone: +212 7.72.34.74.88</li>
             <li>Email: cosmitik@gmail.com</li>
@@ -333,63 +332,52 @@
         </div>
       </div>
 
-      <!-- Section Partenaire / Logo -->
-      <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-        <div class="footer__widget">
-          <h6></h6>
-          <a href="https://ofppt.com" target="_blank" rel="noopener noreferrer">
-            <img src="{{ asset('frontend/img/ofppt.png') }}" alt="OFPT Logo" />
-          </a>
-          <!-- 
-            Commentaires d’anciennes listes (si besoin, à réactiver)
-            <ul> ... </ul> 
-          -->
-        </div>
-      </div>
-
       <!-- Section Newsletter -->
-      <div class="col-lg-4 col-md-12">
+      <div class="col-lg-4 col-md-6 mb-4 mt-5">
         <div class="footer__widget">
-          <h6>Join Our Newsletter Now</h6>
-          <p>Get E-mail updates about our latest shop and special offers.</p>
-          <form action="{{ route('subscribe') }}" method="post">
+          <h6 class="mb-3">Join Our Newsletter Now</h6>
+          <p class="small">Get E-mail updates about our latest shop and special offers.</p>
+
+          <form action="{{ route('subscribe') }}" method="POST" class="d-flex flex-column align-items-center gap-2 mt-3">
             @csrf
-            <input type="text" name="email" placeholder="Enter your mail" required />
-            <button type="submit" class="site-btn">Subscribe</button>
+            <input type="text" name="email" placeholder="Enter your mail" class="form-control w-75" required>
+            <button type="submit" class="site-btn btn btn-primary px-4">Subscribe</button>
           </form>
 
-          <div class="footer__widget__social">
-            <a href="#"><i class="fa fa-facebook"></i></a>
-            <a href="#"><i class="fa fa-instagram"></i></a>
-            <a href="#"><i class="fa fa-twitter"></i></a>
-            <a href="#"><i class="fa fa-pinterest"></i></a>
+          <div class="footer__widget__social mt-4 d-flex justify-content-center gap-3">
+            <a href="#"><i class="fa fa-facebook fa-lg"></i></a>
+            <a href="#"><i class="fa fa-instagram fa-lg"></i></a>
+            <a href="#"><i class="fa fa-twitter fa-lg"></i></a>
+            <a href="#"><i class="fa fa-pinterest fa-lg"></i></a>
           </div>
         </div>
       </div>
 
+      <!-- Section Paiement (optionnel) -->
+      <div class="col-lg-4 col-md-12 mb-4 text-center mt-5 p-4">
+        <h6 class="mb-3 mt-5">We Accept</h6>
+        <img src="{{ asset('frontend/img/payment-item.png') }}" alt="Payment Methods"  >
+      </div>
+
     </div>
 
-    <!-- Ligne copyright & paiement -->
-    <div class="row">
-      <div class="col-lg-12">
-        <div class="footer__copyright d-flex justify-content-between align-items-center flex-wrap">
-          <div class="footer__copyright__text">
-            <p>
-              &copy;
-              <script>document.write(new Date().getFullYear());</script>
-              ISGI Devlppement Digital Option Web Full Stack
-              <i class="fa fa-heart" aria-hidden="true"></i> by
-              <a href="https://colorlib.com" target="_blank" rel="noopener noreferrer">DEVOWF202</a>
-            </p>
-          </div>
-          <div class="footer__copyright__payment">
-            <img src="{{ asset('frontend/img/payment-item.png') }}" alt="Payment Methods" />
-          </div>
-        </div>
+    <!-- Ligne copyright -->
+    <div class="row mt-4 pt-3 border-top">
+      <div class="col-12 text-center small">
+        <p class="mb-0">
+
+          
+          <!-- <script>document.write(new Date().getFullYear());</script> -->
+           ISGI Développement Digital - Option Web Full Stack.
+          Made with <i class="fa fa-heart text-danger"></i> 
+       
+        </p>
       </div>
     </div>
-    </div>
-    </footer>
+  </div>
+</footer>
+<!-- Footer Section End -->
+
 
 
 
@@ -402,5 +390,9 @@
     <script src="{{ asset('frontend/js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('frontend/js/main.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
+
+
+ 
+
   </body>
 </html>

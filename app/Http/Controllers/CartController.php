@@ -7,6 +7,84 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+
+public function destroy(Request $request)
+{
+    $id = $request->input('id');
+
+    if (\Cart::get($id)) {
+        \Cart::remove($id);
+        return redirect()->back()->with('success', 'Item removed from cart.');
+    }
+
+    return redirect()->back()->with('error', 'Item not found in cart.');
+}
+
+    
+
+public function update(Request $request)
+{
+    $id = $request->input('id');
+    $action = $request->input('action');
+
+    $item = \Cart::get($id);
+
+    if (!$item) {
+        return redirect()->back()->with('error', 'Item not found in cart.');
+    }
+
+    $quantity = $item->quantity;
+
+    if ($action === 'increase') {
+        $quantity += 1;
+    } elseif ($action === 'decrease') {
+        $quantity -= 1;
+        if ($quantity < 1) {
+            \Cart::remove($id);
+            return redirect()->back()->with('success', 'Item removed from cart.');
+        }
+    }
+
+    \Cart::update($id, [
+        'quantity' => [
+            'relative' => false,
+            'value' => $quantity
+        ]
+    ]);
+
+    return redirect()->back()->with('success', 'Cart updated.');
+}
+
+
+
+
+    public function store(Request $request) {
+         
+    $product = Product::findOrFail($request->product_id);
+         
+    \Cart::add([
+        'id' => $product->id,
+        'name' => $product->name,
+        'price' => $product->price,
+        'quantity' => 1,
+        
+
+         
+    ]);
+return redirect(url('/'));
+    // return response()->json(['status' => 200]);
+
+    
+
+}
+
+// public function sidebarContent() {
+//     $items = \Cart::getContent();
+//     return view('partials.cart-sidebar', compact('items'));
+// }
+
+
+
     /**
      * Display a listing of the resource.
      *
@@ -39,34 +117,34 @@ class CartController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request,$sessionKey = null)
-    {
-        $product = Product::findOrFail($request->productId);
+    // public function store(Request $request,$sessionKey = null)
+    // {
+    //     $product = Product::findOrFail($request->productId);
 
-		$item = [
-			'id' => md5($product->id),
-			'name' => $product->name,
-			'price' => $product->price,
-			'quantity' => isset($request->quantity) ? $request->quantity : 1,
-			'associatedModel' => $product,
-		];
+	// 	$item = [
+	// 		'id' => md5($product->id),
+	// 		'name' => $product->name,
+	// 		'price' => $product->price,
+	// 		'quantity' => isset($request->quantity) ? $request->quantity : 1,
+	// 		'associatedModel' => $product,
+	// 	];
 
-        if ($sessionKey) {
-            \Cart::add($item);
-            return response()->json([
-                'status' => 200,
-                'message' => 'Successfully Added to Cart !',
-            ]);
-        }else {
-            $carts = \Cart::add($item);
-            return response()->json([
-                'status' => 200,
-                'message' => 'Successfully Added to Cart !',
-            ]);
-        }
+    //     if ($sessionKey) {
+    //         \Cart::add($item);
+    //         return response()->json([
+    //             'status' => 200,
+    //             'message' => 'Successfully Added to Cart !',
+    //         ]);
+    //     }else {
+    //         $carts = \Cart::add($item);
+    //         return response()->json([
+    //             'status' => 200,
+    //             'message' => 'Successfully Added to Cart !',
+    //         ]);
+    //     }
         
 		
-    }
+    // }
 
     /**
      * Display the specified resource.
@@ -104,7 +182,7 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $cart_id)
+    public function updmate(Request $request, $cart_id)
     {
         $cartUpdate = \Cart::update($cart_id,[
             'quantity' => [
@@ -130,7 +208,7 @@ class CartController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($cart_id)
+    public function destrroy($cart_id)
     {
         \Cart::remove($cart_id);
         $cart_total = \Cart::getTotal();

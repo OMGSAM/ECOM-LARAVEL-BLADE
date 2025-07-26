@@ -10,10 +10,8 @@ class BlogController extends Controller
 {
     public function index(){
 
-        $cartCount = 0;
-        
-$cartTotal=0;
-
+ $cartTotal = \Cart::getTotal();
+         $cartCount = \Cart::getContent()->count();
 
         return view('frontend.contact.index',compact('cartCount' , 'cartTotal'));
     }

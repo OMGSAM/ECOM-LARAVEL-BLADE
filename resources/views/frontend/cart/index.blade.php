@@ -11,14 +11,34 @@
                 <div class="breadcrumb__text">
                     <h2>Shopping  Cart</h2>
                     <div class="breadcrumb__option">
-                        <a href="/">Home</a>
-                        <span>Shopping Cart</span>
-                                            <a href="{{url('order/checkout')}}"> CHECKOUT </a>
+                        <!-- <a href="/">Home</a> -->
+                        <!-- <span>Shopping Cart</span> -->
+                        <br>
+                        <br>
+                                            <!-- <a href="{{url('order/checkout')}}"> CHECKOUT </a> -->
 
                     </div>
 
                     <section class="checkout spad">
-                                   <div class="breadcrumb__option">         <a href="{{url('order/checkout')}}"> GO TO CHECK OUT </a></div>
+<div class="breadcrumb__option">
+
+   @if(!$cartItems->isEmpty())
+    <!-- <a href="{{ url('order/checkout') }}" style="font-size: 22px; font-weight: bold;">
+        <= GO TO CHECK OUT =>
+    </a> -->
+@else
+    <p style="font-size: 18px;">Votre panier est vide.</p>
+@endif
+
+
+        
+    
+
+
+     <!-- <a href="{{ url('clear/cart') }}" style="font-size: 22px; font-weight: bold;">
+        <= CLEAR THE CART =>
+    </a> -->
+</div>
 
 <div class="container" id="cart" style="background: white; color: black; border: 2px solid red; padding: 20px;">
 
@@ -32,26 +52,18 @@
                         <th>Quantité</th>
                         <th>Prix</th>
                         <th>Total</th>
-                          <th>action</th>
+                           
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($cartItems as $item)
                         <tr>
                              <td>{{ $item->name }}</td>
-                            <td>{{ $item->quantity }}</td>
+                            <td>{{$item->qty}}</td>
                             <td>{{ number_format($item->price, 2) }} MAD</td>
-                            <td>{{ number_format($item->getPriceSum(), 2) }} MAD
+                            <td>{{ number_format($item->getPriceSum(), 2) }} MAD </td>
 
-                             
-                            </td>
-                             <td>
-                                <form  method="post" action="{{route('cart.destroy' , $item->id)}}">
-                                    @csrf 
-                                    @method('delete')
-                                    <input type="submit" value="remove">
-                                </form>
-                             </td>
+
                         </tr>
                     @endforeach
                     <tr>
@@ -70,6 +82,22 @@
     </div>
 </section>
 
+<div class="text-center my-4 d-flex justify-content-center gap-3 flex-wrap">
+    <!-- Proceed to Checkout -->
+    <a href="{{ url('order/checkout') }}"
+       class="btn btn-lg fw-bold text-white"
+       style="background-color: black;   font-size: 20px; border-radius: 10px;">
+        🛒 PROCEED TO CHECKOUT
+    </a>
+
+    <!-- Clear the Cart -->
+    <a href="{{ url('clear/cart') }}"
+       onclick="return confirm('Are you sure you want to clear the cart?')"
+       class="btn btn-lg fw-bold text-white"
+       style="background-color: black;  font-size: 20px; border-radius: 10px;">
+        🗑️ CLEAR THE CART
+    </a>
+</div>
 
                 </div>
             </div>

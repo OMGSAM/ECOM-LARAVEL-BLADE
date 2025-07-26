@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers;
-
 use Exception;
 use App\Models\Order;
 use App\Models\Payment;
@@ -11,27 +9,21 @@ use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Midtrans\Snap;
 
-class OrderController extends Controller
-{
-
-
-	public function destroy($id)
-{
-    $order = Order::findOrFail($id);
-
-     $order->delete();
-
-    return redirect()->back()->with('success', 'Commande supprimée avec succès.');
+class OrderController extends Controller {	 
+public function clearCart() {
+\Cart::clear(); 
+return redirect(url('/'));
 }
 
+	public function destroy($id) {
+    $order = Order::findOrFail($id);
+     $order->delete();
+    return redirect()->back()->with('success', 'Commande supprimée avec succès.');
+	}
 
-
-	public function process()
-	{
-
+	public function process(){
 		  $cartTotal = \Cart::getTotal();
         $cartCount = \Cart::getContent()->count();
-
         return view('frontend.order.checkout',compact('cartTotal','cartCount'));
     }
 
@@ -83,12 +75,12 @@ class OrderController extends Controller
         'grand_total' => \Cart::getTotal(),
     ]);
 
-	foreach (\Cart::getContent() as $item) {
 
+	foreach (\Cart::getContent() as $item) { 
         OrderItem::create([
-            'order_id' => $order->id,
-            'product_id' => $item->id,
-            'qty' => $item->quantity,
+            'order_id' => (int) $order->id ,
+			'product_id' => (int) $item->id ,
+            'qty' => $item->quantity, 
             'base_price' => $item->price,
             'base_total' => $item->price * $item->quantity,
             'tax_amount' => 0, // à calculer si besoin
@@ -110,9 +102,6 @@ class OrderController extends Controller
     //         'price' => $item->price,
     //     ]);
     // }
-
-    // Vider le panier
-    // \Cart::clear();
 
     return redirect()->route('thank');
 }

@@ -32,8 +32,8 @@
                                  <td>   {{$product->customer_first_name}} </td>
                                  <td>   {{$product->customer_phone}} </td>
                                  <td>   {{$product->customer_address}} </td>
-                                 <td>   {{$product->grand_total}} </td>
-                                 <td>   {{$product->payment_due}} </td>
+                                 <td>   {{$product->grand_total}} DH </td>
+<td>{{ \Carbon\Carbon::parse($product->payment_due)->format('Y:m:d') }} à {{ \Carbon\Carbon::parse($product->payment_due)->format('H:i') }}</td>
                                                                   <td>   {{$product->customer_email}} </td>
 
                                                                    <td>  

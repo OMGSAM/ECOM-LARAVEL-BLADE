@@ -20,10 +20,10 @@
                             @endforeach
                         </select>   
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="tags">Tag</label>
                          <input type="text" name="tags" value="{{ old('tags') }}" class="form-control">
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input type="text" name="name" value="{{ old('name') }}" class="form-control">

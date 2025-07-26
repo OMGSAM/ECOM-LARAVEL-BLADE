@@ -78,9 +78,9 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::pluck('name', 'id');
-        $tags = Tag::pluck('name', 'id');
+        #$tags = Tag::pluck('name', 'id');
 
-        return view('admin.products.edit', compact('product','categories','tags'));
+        return view('admin.products.edit', compact('product','categories'));
     }
 
     /**
@@ -92,7 +92,7 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request,Product $product)
     {
-        $product->update($request->validated());
+        $product->update($request->all());
         // $product->tags()->sync($request->input('tags', []));
 
         // if (count($product->gallery) > 0) {

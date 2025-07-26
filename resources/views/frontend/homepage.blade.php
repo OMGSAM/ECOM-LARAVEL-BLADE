@@ -1,7 +1,6 @@
 @extends('layouts.frontend')
-
 @section('content')
-    <!-- Breadcrumb Section Begin -->
+
     <section class="mb-5">
       <div class="container-fluid">
           <div class="hero__item set-bg" data-setbg="{{ asset('frontend/img/hero/banner.png') }}">
@@ -14,9 +13,10 @@
           </div>
       </div>
     </section>
-      <!-- Breadcrumb Section End -->
 
-    <!-- Categories Section Begin -->
+    
+
+
     <section class="categories">
       <div class="container">
       <div class="section-title">
@@ -26,8 +26,9 @@
           <div class="categories__slider owl-carousel">
     
 
-<div class="row justify-content-center">
-  @for($i = 1; $i <= 4; $i++)
+<div class="row justify-content-center g-4">
+ 
+  @for($i = 1; $i <= 3; $i++)
      <div class=" d-flex justify-content-center">
       <div class="categories__item text-center">
         <h5>
@@ -35,10 +36,19 @@
             Accessoire {{ $i }}
           </a>
         </h5>
-        <img src="{{ asset('frontend/img/categories/cat-' . $i . '.jpg') }}" 
+
+          @php 
+
+      $v=  'hero/product3.png' ;
+      $c='breadcrumb.jpg' ;
+  @endphp
+        
+          <img src="{{ asset('frontend/img/'.$v) }}" 
              alt="Accessoire {{ $i }}" 
-            
-              >
+                         style="height: 300px; width: 100%; object-fit: cover; border: 1px solid #ddd;">
+
+              
+              <br>
       </div>
     </div>
   @endfor
@@ -53,32 +63,74 @@
     </section>
     <!-- Categories Section End -->
 
-    <!-- Featured Section Begin -->
-    <section class="featured spad">
+
+    
+
+
+<section class="featured spad">
   <div class="container">
-    <div class="row">
+    <div class="row mb-5">
       <div class="col-lg-12 text-center">
         <div class="section-title">
-          <h2>Featured Product</h2>
+          <h2>Featured Products</h2>
         </div>
       </div>
     </div>
 
     <div class="row justify-content-center">
-      @for ($i = 1; $i <= 4; $i++)
-        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex justify-content-center">
-          <div class="categories__item text-center">
-           <a href="{{url('products')}}">
+      @php $i = 2; @endphp
 
-            <h5> PC LG {{ $i }}</h5>
-            <img src="{{ asset('frontend/img/product/product-' . $i . '.jpg') }}" alt="Image {{ $i }}" class="img-fluid" style="max-height: 200px;">
-</a>
+      @forelse ($products as $product)
+        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 d-flex align-items-stretch justify-content-center">
+          <div class="card text-center shadow-sm p-3 w-100">
+            
+            {{-- Image --}}
+            <a href="{{ url('products') }}">
+              <img src="{{ asset('frontend/img/hero/product' . $i . '.jpeg') }}"
+                   alt="Image {{ $i }}"
+                   class="card-img-top img-fluid mb-3"
+                   style="max-height: 300px; object-fit: cover;">
+            </a>
+
+            {{-- Nom et prix --}}
+            <div class="card-body">
+              <h5 class="card-title">{{ $product->name }}</h5>
+              <h6 class="card-subtitle mb-2 text-muted">${{ $product->price }}</h6>
+
+              {{-- Bouton ADD TO CART / VIEW CART --}}
+              
+              @if(in_array($product->id, $productIdsInCart))
+                <a href="{{ route('cart.index') }}" class="btn btn-success mt-2 w-100">
+                  VIEW CART <i class="fa fa-eye"></i>
+                </a>
+              @else
+                <form action="{{ route('cart.store') }}" method="POST" class="mt-2">
+                  @csrf
+                  <input type="hidden" name="product_id" value="{{ $product->id }}">
+                  <button type="submit" class="btn btn-primary w-100">
+                    ADD TO CART <i class="fa fa-shopping-cart"></i>
+                  </button>
+                </form>
+              @endif
+            </div>
           </div>
         </div>
-      @endfor
+
+        @php
+          $i++;
+          if ($i == 3) $i++;
+          if ($i > 5) $i = 2;
+        @endphp
+      @empty
+        <div class="col text-center">
+          <div class="alert alert-warning">No Featured Products Available</div>
+        </div>
+      @endforelse
     </div>
   </div>
 </section>
+
+
 
 
 
@@ -146,7 +198,7 @@
         <div class="row">
           <div class="col-lg-6 col-md-6 col-sm-6">
             <div class="banner__pic">
-              <img src="{{ asset('frontend/img/banner/banner-1.jpg') }}" alt="" />
+              <img src="{{ asset('frontend/img/breadcrumb.jpg') }}" alt="" />
             </div>
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6">
@@ -157,5 +209,8 @@
         </div>
       </div>
     </div>
+
+         
+
     <!-- Banner End -->
 @endsection

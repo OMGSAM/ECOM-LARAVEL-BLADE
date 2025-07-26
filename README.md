@@ -36,7 +36,7 @@ Go to the project directory
     php artisan storage:link
 ```
 
-#### Login
+<!-- #### Login
 
 -   email = admin@example.com
--   password = 123
+-   password = 123 -->
