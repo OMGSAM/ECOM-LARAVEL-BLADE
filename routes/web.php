@@ -1,6 +1,8 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
+use App\Http\Controllers\AICONTROLLER;
+
 use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -11,6 +13,36 @@ use App\Http\Controllers\FactureController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
+
+
+/*
+    User
+   │
+   ▼
+Laravel (Controller)
+   │
+HTTP request
+   ▼
+Python AI service
+   │
+vector search
+   ▼
+ChromaDB
+   │
+context
+   ▼
+LLM response
+
+    */
+
+
+Route::post('/assistant', [AICONTROLLER::class,'ask']);
+
+
+
+
+
+
 
 Route::GET('foto/{y}', [HomeController::class, 'foto']);
 Route::get('/blog',function(){
