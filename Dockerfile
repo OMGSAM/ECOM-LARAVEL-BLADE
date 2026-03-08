@@ -14,7 +14,7 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN php composer.phar install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 
-RUN php artisan key:generate
+#RUN php artisan key:generate
 
 # clear cache
 RUN php artisan config:clear
