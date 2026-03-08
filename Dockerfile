@@ -1,25 +1,27 @@
-FROM php:8.2-cli
+FROM php:8.2-fpm
 
 WORKDIR /app
 
-# Installer packages système nécessaires
+# Installer extensions PHP nécessaires
 RUN apt-get update && apt-get install -y \
     git unzip libzip-dev libcurl4-openssl-dev libonig-dev libxml2-dev pkg-config zlib1g-dev \
     && docker-php-ext-install pdo pdo_mysql zip mbstring curl bcmath xml
 
-# Copier tout le projet d’un coup
+# Copier tout le projet
 COPY . .
 
 # Installer Composer
 RUN curl -sS https://getcomposer.org/installer | php
-
-# Installer dépendances Laravel
 RUN php composer.phar install --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# Artisan cache
+# Copier .env.example si .env n’existe pas
+RUN if [ ! -f .env ]; then cp .env.example .env; fi
+
+# Cache Laravel
 RUN php artisan config:cache
 
-# Démarrer serveur
-# Convertir PORT en int
-ENV PORT_INT=8000
-CMD php artisan serve --host=0.0.0.0 --port=${PORT_INT}
+# Exposer le port 9000 (PHP-FPM)
+EXPOSE 9000
+
+# Lancer PHP-FPM
+CMD ["php-fpm"]
