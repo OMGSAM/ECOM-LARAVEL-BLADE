@@ -1,12 +1,20 @@
-FROM php:8.2
+FROM php:8.2-cli
 
 WORKDIR /app
 
-# Installer extensions PHP nécessaires AVANT Composer
-RUN apt-get update && apt-get install -y git unzip libzip-dev libcurl4-openssl-dev \
-    && docker-php-ext-install pdo pdo_mysql zip mbstring curl
+# Installer packages système nécessaires pour Laravel
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    libzip-dev \
+    libcurl4-openssl-dev \
+    libonig-dev \
+    libxml2-dev \
+    pkg-config \
+    zlib1g-dev \
+    && docker-php-ext-install pdo pdo_mysql zip mbstring curl bcmath xml
 
-# Copier seulement composer.json (pas de composer.lock si tu l'as supprimé)
+# Copier seulement composer.json
 COPY composer.json ./
 
 # Installer Composer
@@ -18,8 +26,8 @@ RUN php composer.phar install --no-dev --optimize-autoloader
 # Copier le reste du projet
 COPY . .
 
-# Laravel cache
+# Cache Laravel
 RUN php artisan config:cache
 
-# Start serveur
+# Démarrage
 CMD php artisan serve --host=0.0.0.0 --port=8000
