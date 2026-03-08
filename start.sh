@@ -1,13 +1,7 @@
 #!/bin/bash
-# start.sh
 
-# Lancer les migrations (optionnel)
-php artisan migrate --force
+# Démarrer Nginx
+service nginx start
 
-# Clear cache
-php artisan config:clear
-php artisan route:clear
-php artisan view:clear
-
-# Démarrer le serveur Laravel pour Railway
-php artisan serve --host=0.0.0.0 --port=8000
+# Démarrer PHP-FPM en foreground pour que le conteneur reste actif
+php-fpm
