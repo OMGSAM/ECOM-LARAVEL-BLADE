@@ -21,13 +21,13 @@ COPY composer.json ./
 RUN curl -sS https://getcomposer.org/installer | php
 
 # Installer dépendances Laravel
-RUN php composer.phar install --no-dev --optimize-autoloader
+RUN php composer.phar install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Copier le reste du projet
 COPY . .
 
-# Cache Laravel
+# Artisan cache
 RUN php artisan config:cache
 
-# Démarrage
+# Démarrage serveur
 CMD php artisan serve --host=0.0.0.0 --port=8000
