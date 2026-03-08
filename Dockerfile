@@ -20,4 +20,6 @@ RUN php composer.phar install --no-dev --optimize-autoloader --ignore-platform-r
 RUN php artisan config:cache
 
 # Démarrer serveur
-CMD php artisan serve --host=0.0.0.0 --port=8000
+# Convertir PORT en int
+ENV PORT_INT=8000
+CMD php artisan serve --host=0.0.0.0 --port=${PORT_INT}
