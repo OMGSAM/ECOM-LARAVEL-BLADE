@@ -13,8 +13,7 @@ RUN curl -sS https://getcomposer.org/installer | php
 
 RUN php composer.phar install --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# copy env
-RUN cp .env.example .env
+
 
 # generate key
 RUN php artisan key:generate
