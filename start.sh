@@ -1,10 +1,13 @@
-#!/bin/sh
-# attendre que MySQL soit prêt avant de démarrer Laravel
+#!/bin/bash
+# start.sh
 
-echo "Waiting for MySQL..."
-while ! nc -z $DB_HOST $DB_PORT; do
-  sleep 2
-done
+# Lancer les migrations (optionnel)
+php artisan migrate --force
 
-echo "MySQL is up, starting Laravel..."
-php artisan serve --host=0.0.0.0 --port=$PORT
+# Clear cache
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
+
+# Démarrer le serveur Laravel pour Railway
+php artisan serve --host=0.0.0.0 --port=8000
