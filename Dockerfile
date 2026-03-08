@@ -1,5 +1,5 @@
 # Dockerfile
-FROM php:8.2-cli
+FROM php:8.1-cli
 
 # Définir le répertoire de travail
 WORKDIR /app
