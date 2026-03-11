@@ -73,6 +73,11 @@
               <div class="header__top__right__auth">
                 
                 <a href="{{ route('login') }}"><i class="fa fa-user"></i> Login</a>
+                  <a href="/auth/google">
+    <i class="fa fa-user">
+        Log in  with Google
+    </i>
+</a>
               </div>
             </div>
             <div class="header__top__right__auth" style="margin-left: 20px">
@@ -176,11 +181,18 @@
                 @guest
                   <div class="header__top__right">
                     <div
-                      class="header__top__right__language header__top__right__auth"
-                    >
-                      <a class="d-inline" href="{{ route('login') }}"
-                        ><i class="fa fa-user"></i> Login</a
-                      >
+                      class="header__top__right__language header__top__right__auth">
+                    
+                      <a class="d-inline" href="{{ route('login') }}">
+                        <i class="fa fa-user"></i> Login</a>
+
+                           <a href="/auth/google">
+    <i class="fa fa-user">
+        Log  in with Google
+    </i>
+</a>
+
+                      
 
                         
                     </div>
