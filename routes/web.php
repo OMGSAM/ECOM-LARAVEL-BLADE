@@ -15,6 +15,11 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 
 
+use App\Http\Controllers\Auth\GoogleController;
+
+Route::get('auth/google', [GoogleController::class,'redirect']);
+Route::get('auth/google/callback', [GoogleController::class,'callback']);
+
 /*
     User
    │
