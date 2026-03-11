@@ -181,9 +181,19 @@
                       <a class="d-inline" href="{{ route('login') }}"
                         ><i class="fa fa-user"></i> Login</a
                       >
+
+                        
                     </div>
                     <div class="header__top__right__auth">
                       <a href="{{ route('register') }}"><i class="fa fa-user"></i> Register</a>
+                        <a href="/auth/google">
+    <i class="fa fa-user">
+        Sign up with Google
+    </i>
+</a>
+
+
+                        
                     </div>
                 </div>
                 @else 
