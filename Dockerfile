@@ -20,9 +20,11 @@ RUN php -r "copy('https://getcomposer.org/installer','composer-setup.php');" \
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
 # Permissions Laravel
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
-# Lancer Laravel
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-19333}
+# Exposer le port fourni par Railway
+EXPOSE ${PORT:-8000}
 
-EXPOSE 8000
+# Lancer Laravel sur le port fourni par Railway
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
