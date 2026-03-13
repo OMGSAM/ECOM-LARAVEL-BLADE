@@ -23,6 +23,6 @@ RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 # Lancer Laravel
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+CMD php artisan serve --host=0.0.0.0 --port=${PORT:-19333}
 
 EXPOSE 8000
