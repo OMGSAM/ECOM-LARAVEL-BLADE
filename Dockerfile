@@ -2,29 +2,37 @@ FROM php:8.1-cli
 
 WORKDIR /app
 
-# Installer extensions PHP
+# Installer extensions
 RUN apt-get update && apt-get install -y \
     git unzip libzip-dev libcurl4-openssl-dev libonig-dev libxml2-dev \
     libpng-dev libjpeg-dev libfreetype6-dev libicu-dev zlib1g-dev \
     && docker-php-ext-install pdo pdo_mysql zip mbstring curl bcmath xml gd intl
 
-# Copier le code Laravel
+# Installer Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Copier code
 COPY . .
 
-# Installer Composer
-RUN php -r "copy('https://getcomposer.org/installer','composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');"
+# Logs debug build
+RUN echo "Installing dependencies..." \
+    && composer install --no-dev --optimize-autoloader --ignore-platform-reqs
 
-# Installer les dépendances PHP
-RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs
-
-# Permissions Laravel
+# Permissions
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-# Exposer le port fourni par Railway
-EXPOSE ${PORT:-8000}
+# Générer APP_KEY si manquant
+RUN php artisan key:generate || true
 
-# Lancer Laravel sur le port fourni par Railway
-CMD php artisan serve --host=0.0.0.0 --port=${PORT:-8000}
+# Cache config
+RUN php artisan config:cache || true
+RUN php artisan route:cache || true
+
+# Expose port
+EXPOSE 8000
+
+# START avec logs
+CMD echo "🚀 Starting Laravel..." && \
+    echo "PORT = $PORT" && \
+    php -d display_errors=1 artisan serve --host=0.0.0.0 --port=${PORT:-8000}
