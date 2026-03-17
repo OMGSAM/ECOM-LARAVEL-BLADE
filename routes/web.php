@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\AICONTROLLER;
-
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Admin\CategoryController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
@@ -47,6 +47,19 @@ Route::post('/assistant', [AICONTROLLER::class,'ask']);
 
 
 
+Route::get('/', function () {
+    return response()->json([
+        'status' => 'OK',
+        'time' => now()
+    ]);
+});
+
+ 
+
+Route::get('/test-log', function () {
+    Log::info('TEST OK');
+    return 'OK';
+});
 
 
 Route::GET('foto/{y}', [HomeController::class, 'foto']);
