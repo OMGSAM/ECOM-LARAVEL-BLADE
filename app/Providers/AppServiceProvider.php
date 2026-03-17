@@ -31,15 +31,19 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Paginator::useBootstrap();
-        View::composer('*', function($view) {
-            $view->with('menu_categories', Category::with('children')->whereNull('category_id')->get());
-            $view->with('menu_tags', Tag::get());
 
-             View::share('x', Order::all());
-    View::share('y', Product::all());
-    View::share('z', User::all());
+        if ($this->app->environment('production')){
+        URL::forceScheme('https');
+        }
+    //     Paginator::useBootstrap();
+    //     View::composer('*', function($view) {
+    //         $view->with('menu_categories', Category::with('children')->whereNull('category_id')->get());
+    //         $view->with('menu_tags', Tag::get());
 
-        }); 
-    }
+    //          View::share('x', Order::all());
+    // View::share('y', Product::all());
+    // View::share('z', User::all());
+
+    //     }); 
+    // }
 }
